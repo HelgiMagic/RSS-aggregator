@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
     "build": "npx webpack --mode production",
     "server": "npx webpack serve --mode development"
   },
@@ -30,6 +31,8 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "on-change": "^4.0.2",
+    "yup": "^1.2.0"
   }
 }

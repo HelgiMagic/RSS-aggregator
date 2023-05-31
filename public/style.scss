@@ -23,4 +23,20 @@
   #url-input {
     border-radius: 10px;
   }
+
+  .warning {
+    color: red;
+  }
+}
+.is-invalid {
+    border-color: #dc3545;
+}
+
+input:focus {
+  outline: none;
+  border-color: #86b7fe;
+}
+
+.is-invalid:focus {
+  border-color: #dc3545;
 }
