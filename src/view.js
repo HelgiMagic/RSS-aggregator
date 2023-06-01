@@ -1,9 +1,12 @@
+/* eslint-disable no-param-reassign */
 import onChange from 'on-change';
-import {
-    object, string, number, date, InferType,
-} from 'yup';
+import i18next from 'i18next';
+import { setLocale } from 'yup';
+import validate from './validate.js';
+import resources from './locales/locales.js';
 
 const state = {
+  lang: 'ru',
   form: {
     state: 'calm',
     error: '',
@@ -11,21 +14,69 @@ const state = {
   subscriptions: [],
 };
 
-const form = document.querySelector('.rss-form');
-const input = form.querySelector('input');
+const i18 = i18next.createInstance();
+i18.init({
+  lng: state.lang,
+  debug: true,
+  resources,
+});
 
-const validate = (url) => {
-  const schema = string()
-    .url().required('string must be URL')
-    .notOneOf(state.subscriptions);
-  return schema.validate(url).catch((e) => e);
+setLocale({
+  string: {
+    url: i18.t('notAUrl'),
+    required: i18.t('required'),
+    notOneOf: i18.t('alreadySubscribed'),
+  },
+});
+
+const createBasedForm = (form, inputValue = '') => {
+  form.innerHTML = '';
+
+  const input = document.createElement('input');
+  input.name = 'url';
+  input.id = 'url-input';
+
+  const label = document.createElement('label');
+  label.for = 'url-input';
+  label.textContent = i18.t('rssLink');
+
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.classList.add('btn', 'btn-primary');
+  button.textContent = i18.t('submitButton');
+
+  form.append(input, label, button);
+  form.reset();
+  input.focus();
+  return { input, label, button };
 };
+
+const renderForm = (form, formState, inputValue) => {
+  if (formState.state === 'calm') {
+    createBasedForm(form);
+  }
+
+  if (formState.state === 'invalid') {
+    const { input } = createBasedForm(form);
+    input.classList.add('is-invalid');
+    input.value = inputValue;
+
+    const warningMessage = document.querySelector('.warning') || document.createElement('p');
+    warningMessage.classList.add('warning');
+    warningMessage.textContent = state.form.error;
+    form.append(warningMessage);
+  }
+};
+
+const form = document.querySelector('.rss-form');
+renderForm(form, state.form);
 
 const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state' && value === 'sending') {
-    validate(input.value).then((answer) => {
+    const { value: inputValue } = document.querySelector('input');
+    validate(inputValue, state).then((answer) => {
       if (typeof answer === 'string') {
-        state.subscriptions.push(input.value);
+        state.subscriptions.push(inputValue);
         watchedState.form.state = 'calm';
       } else {
         state.form.error = answer.message;
@@ -35,19 +86,12 @@ const watchedState = onChange(state, (path, value) => {
   }
 
   if (path === 'form.state' && value === 'invalid') {
-    input.classList.add('is-invalid');
-    const warningMessage = document.querySelector('.warning') || document.createElement('p');
-    warningMessage.classList.add('warning');
-    warningMessage.textContent = state.form.error;
-    form.append(warningMessage);
+    const { value: inputValue } = document.querySelector('input');
+    renderForm(form, state.form, inputValue);
   }
 
   if (path === 'form.state' && value === 'calm') {
-    input.classList.remove('is-invalid');
-    const warningMessage = document.querySelector('.warning');
-    warningMessage.remove();
-    form.reset();
-    input.focus();
+    renderForm(form, state.form);
   }
 });
 
