@@ -23,13 +23,13 @@ i18.init({
 
 setLocale({
   string: {
-    url: i18.t('notAUrl'),
-    required: i18.t('required'),
-    notOneOf: i18.t('alreadySubscribed'),
+    url: 'notAUrl',
+    required: 'required',
+    notOneOf: 'alreadySubscribed',
   },
 });
 
-const createBasedForm = (form, inputValue = '') => {
+const createBasedForm = (form) => {
   form.innerHTML = '';
 
   const input = document.createElement('input');
@@ -37,7 +37,7 @@ const createBasedForm = (form, inputValue = '') => {
   input.id = 'url-input';
 
   const label = document.createElement('label');
-  label.for = 'url-input';
+  label.setAttribute('for', 'url-input');
   label.textContent = i18.t('rssLink');
 
   const button = document.createElement('button');
@@ -52,8 +52,11 @@ const createBasedForm = (form, inputValue = '') => {
 };
 
 const renderForm = (form, formState, inputValue) => {
+  const warningMessage = document.querySelector('.warning');
+
   if (formState.state === 'calm') {
     createBasedForm(form);
+    warningMessage.textContent = '';
   }
 
   if (formState.state === 'invalid') {
@@ -61,10 +64,7 @@ const renderForm = (form, formState, inputValue) => {
     input.classList.add('is-invalid');
     input.value = inputValue;
 
-    const warningMessage = document.querySelector('.warning') || document.createElement('p');
-    warningMessage.classList.add('warning');
-    warningMessage.textContent = state.form.error;
-    form.append(warningMessage);
+    warningMessage.textContent = i18.t(state.form.error);
   }
 };
 

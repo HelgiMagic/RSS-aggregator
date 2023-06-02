@@ -1,6 +1,6 @@
 export default {
   translation: {
-    alreadySubscribed: 'testik 2',
+    alreadySubscribed: 'RSS уже добавлен',
     notAUrl: 'не RSS-ссылка!',
     submitButton: 'Добавить',
     rssLink: 'ссылка RSS',
