@@ -4,6 +4,6 @@ export default {
     notAUrl: 'не RSS-ссылка!',
     submitButton: 'Добавить',
     rssLink: 'ссылка RSS',
-    required: 'не введено значение',
+    required: 'Не введено значение',
   },
 };

@@ -24,7 +24,8 @@ i18.init({
 setLocale({
   string: {
     url: 'notAUrl',
-    required: 'required',
+  },
+  mixed: {
     notOneOf: 'alreadySubscribed',
   },
 });
@@ -42,7 +43,7 @@ const createBasedForm = (form) => {
 
   const button = document.createElement('button');
   button.type = 'submit';
-  button.classList.add('btn', 'btn-primary');
+  button.classList.add('btn', 'btn-primary', 'submit-button');
   button.textContent = i18.t('submitButton');
 
   form.append(input, label, button);
@@ -56,7 +57,8 @@ const renderForm = (form, formState, inputValue) => {
 
   if (formState.state === 'calm') {
     createBasedForm(form);
-    warningMessage.textContent = '';
+    warningMessage.classList.add('invisible');
+    warningMessage.textContent = '.';
   }
 
   if (formState.state === 'invalid') {
@@ -65,6 +67,7 @@ const renderForm = (form, formState, inputValue) => {
     input.value = inputValue;
 
     warningMessage.textContent = i18.t(state.form.error);
+    warningMessage.classList.remove('invisible');
   }
 };
 
@@ -73,8 +76,8 @@ renderForm(form, state.form);
 
 const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state' && value === 'sending') {
-    const { value: inputValue } = document.querySelector('input');
-    validate(inputValue, state).then((answer) => {
+    const inputValue = document.querySelector('input').value.trim();
+    validate(inputValue, state, i18).then((answer) => {
       if (typeof answer === 'string') {
         state.subscriptions.push(inputValue);
         watchedState.form.state = 'calm';
