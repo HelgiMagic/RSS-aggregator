@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 import onChange from 'on-change';
 import i18next from 'i18next';
-import { setLocale } from 'yup';
+import axios from 'axios';
 import validate from './validate.js';
 import resources from './locales/locales.js';
+import renderForm from './formRendering.js';
 
 const state = {
   lang: 'ru',
@@ -21,65 +22,16 @@ i18.init({
   resources,
 });
 
-setLocale({
-  string: {
-    url: 'notAUrl',
-  },
-  mixed: {
-    notOneOf: 'alreadySubscribed',
-  },
-});
-
-const createBasedForm = (form) => {
-  form.innerHTML = '';
-
-  const input = document.createElement('input');
-  input.name = 'url';
-  input.id = 'url-input';
-
-  const label = document.createElement('label');
-  label.setAttribute('for', 'url-input');
-  label.textContent = i18.t('rssLink');
-
-  const button = document.createElement('button');
-  button.type = 'submit';
-  button.classList.add('btn', 'btn-primary', 'submit-button');
-  button.textContent = i18.t('submitButton');
-
-  form.append(input, label, button);
-  form.reset();
-  input.focus();
-  return { input, label, button };
-};
-
-const renderForm = (form, formState, inputValue) => {
-  const warningMessage = document.querySelector('.warning');
-
-  if (formState.state === 'calm') {
-    createBasedForm(form);
-    warningMessage.classList.add('invisible');
-    warningMessage.textContent = '.';
-  }
-
-  if (formState.state === 'invalid') {
-    const { input } = createBasedForm(form);
-    input.classList.add('is-invalid');
-    input.value = inputValue;
-
-    warningMessage.textContent = i18.t(state.form.error);
-    warningMessage.classList.remove('invisible');
-  }
-};
-
 const form = document.querySelector('.rss-form');
-renderForm(form, state.form);
+renderForm(form, state, i18);
 
 const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state' && value === 'sending') {
     const inputValue = document.querySelector('input').value.trim();
-    validate(inputValue, state, i18).then((answer) => {
+    validate(inputValue, state).then((answer) => {
       if (typeof answer === 'string') {
         state.subscriptions.push(inputValue);
+        axios.get(inputValue).then((response) => console.log(response)).catch(console.log);
         watchedState.form.state = 'calm';
       } else {
         state.form.error = answer.message;
@@ -90,11 +42,11 @@ const watchedState = onChange(state, (path, value) => {
 
   if (path === 'form.state' && value === 'invalid') {
     const { value: inputValue } = document.querySelector('input');
-    renderForm(form, state.form, inputValue);
+    renderForm(form, state, i18, inputValue);
   }
 
   if (path === 'form.state' && value === 'calm') {
-    renderForm(form, state.form);
+    renderForm(form, state, i18);
   }
 });
 
