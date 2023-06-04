@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const createBasedForm = (form, i18) => {
   form.innerHTML = '';
 

@@ -1,9 +1,10 @@
 export default {
   translation: {
     alreadySubscribed: 'RSS уже добавлен',
-    notAUrl: 'не RSS-ссылка!',
+    notAUrl: 'Не RSS-ссылка!',
     submitButton: 'Добавить',
-    rssLink: 'ссылка RSS',
+    rssLink: 'Cсылка RSS',
     required: 'Не введено значение',
+    RSSNotFound: 'Ресурс не содержит валидный RSS',
   },
 };

@@ -29,10 +29,18 @@
   height: 58px;
   width: 100%;
 
+  position: relative;
+
   label {
     margin-left: 10px;
     margin-right: 10px;
     flex-grow: 1;
+
+    color: black;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   #url-input {
@@ -42,6 +50,31 @@
 
   .submit-button {
     flex-grow: 1;
+
+    margin-left: 40px;
+  }
+}
+
+.content {
+  padding: 0 20%;
+  justify-content: space-between;
+
+  .posts {
+    flex-grow: 3;
+    margin-right: 50px;
+
+    ul {
+      align-items: space-between;
+    }
+  }
+
+  .feeds {
+    flex-grow: 2;
+  }
+
+  button {
+    max-height: 30px;
+    margin-left: 5px;
   }
 }
 .is-invalid {
@@ -55,4 +88,14 @@ input:focus {
 
 .is-invalid:focus {
   border-color: #dc3545;
+}
+
+li {
+  list-style-type: none; /* Убираем маркеры */
+  margin-bottom: 10px;
+}
+
+ul {
+  margin-left: 0; /* Отступ слева в браузере IE и Opera */
+  padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
 }
