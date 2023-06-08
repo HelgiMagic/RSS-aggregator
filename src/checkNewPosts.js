@@ -1,17 +1,17 @@
 import axios from 'axios';
 import parseRSS from './parser';
 
-const checkNewPosts = (watchedState) => {
+const checkNewPosts = (state, watchedState) => {
   watchedState.subscriptions.forEach((sub) => {
     axios
-      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(sub.url)}`)
+      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(sub)}`)
       .then((response) => {
-        const { posts } = parseRSS(response.data.contents);
-        if (posts.length > sub.length) {
-          const newPosts = posts.slice(sub.length);
+        try {
+          const { posts } = parseRSS(response.data.contents);
+          const oldUrls = state.posts.flat().map((post) => post.url);
+          const newPosts = posts.filter(({ url }) => !oldUrls.includes(url));
           watchedState.posts.push(newPosts);
-          sub.length = posts.length;
-        }
+        } catch (err) { console.log(err); }
       });
   });
 };

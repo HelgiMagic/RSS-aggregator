@@ -32,7 +32,7 @@ const parseRSS = (content) => {
     const li = document.createElement('li');
     li.classList.add('post', 'd-flex', 'justify-content-between');
     li.append(a, button);
-    return li;
+    return { url: link, element: li };
   });
   return { posts, feed };
 };

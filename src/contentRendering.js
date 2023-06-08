@@ -5,8 +5,8 @@ const feedsUL = feedsContainer.querySelector('ul');
 const postsUL = postsContainer.querySelector('ul');
 
 const renderNewPosts = (state) => {
-  state.posts.at(-1).reverse().forEach((post) => {
-    postsUL.prepend(post);
+  state.posts.at(-1).reverse().forEach(({ element }) => {
+    postsUL.prepend(element);
   });
 };
 

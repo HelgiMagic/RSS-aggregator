@@ -37,6 +37,12 @@ const renderForm = (form, globalState, i18, inputValue) => {
     warningMessage.textContent = i18.t(globalState.form.error);
     warningMessage.classList.remove('invisible');
   }
+
+  if (globalState.form.state === 'sending') {
+    const { button, input } = createBasedForm(form, i18);
+    input.value = inputValue;
+    button.setAttribute('disabled', '');
+  }
 };
 
 export default renderForm;
