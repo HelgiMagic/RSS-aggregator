@@ -1,4 +1,4 @@
-import showModal from './showModal.js';
+import changeModalContent from './changeModal.js';
 
 const parseRSS = (content) => {
   const html = new DOMParser().parseFromString(content, 'text/xml');
@@ -33,9 +33,11 @@ const parseRSS = (content) => {
     button.textContent = 'Просмотр';
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
     button.setAttribute('type', 'button');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#modal');
     button.addEventListener('click', () => {
       a.className = 'fw-normal';
-      showModal(postTitle, postDescription, link);
+      changeModalContent(postTitle, postDescription, link);
     });
 
     const li = document.createElement('li');
