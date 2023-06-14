@@ -29,6 +29,14 @@ const renderForm = (form, globalState, i18, inputValue) => {
     warningMessage.textContent = '.';
   }
 
+  if (globalState.form.state === 'success') {
+    createBasedForm(form, i18);
+    warningMessage.classList.remove('invisible');
+    warningMessage.textContent = i18.t(globalState.form.error);
+    console.log(globalState.form.error);
+    warningMessage.setAttribute('style', 'color: green');
+  } else warningMessage.removeAttribute('style');
+
   if (globalState.form.state === 'invalid') {
     const { input } = createBasedForm(form, i18);
     input.classList.add('is-invalid');
@@ -42,6 +50,8 @@ const renderForm = (form, globalState, i18, inputValue) => {
     const { button, input } = createBasedForm(form, i18);
     input.value = inputValue;
     button.setAttribute('disabled', '');
+    warningMessage.classList.add('invisible');
+    warningMessage.textContent = '.';
   }
 };
 

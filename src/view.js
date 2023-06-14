@@ -28,7 +28,7 @@ renderForm(form, state, i18);
 
 export const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state') {
-    if (value === 'calm') renderForm(form, state, i18);
+    if (value === 'calm' || value === 'success') renderForm(form, state, i18);
 
     else {
       const { value: inputValue } = document.querySelector('input');
@@ -41,6 +41,10 @@ export const watchedState = onChange(state, (path, value) => {
   }
 
   if (path === 'feeds') {
+    if (state.feeds.length === 1) {
+      document.querySelector('.feeds').classList.remove('invisible');
+      document.querySelector('.posts').classList.remove('invisible');
+    }
     renderNewFeed(state);
   }
 });

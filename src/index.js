@@ -22,7 +22,8 @@ form.addEventListener('submit', (e) => {
             watchedState.feeds.push(feed);
 
             state.subscriptions.unshift(inputValue);
-            watchedState.form.state = 'calm';
+            state.form.error = 'successfullyUploaded';
+            watchedState.form.state = 'success';
           } catch (err) {
             state.form.error = err.message;
             watchedState.form.state = 'invalid';
