@@ -62,10 +62,6 @@
   .posts {
     flex-grow: 3;
     margin-right: 50px;
-
-    ul {
-      align-items: space-between;
-    }
   }
 
   .feeds {
@@ -98,4 +94,8 @@ li {
 ul {
   margin-left: 0; /* Отступ слева в браузере IE и Opera */
   padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+
+.show {
+  display: block;
 }

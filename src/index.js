@@ -1,4 +1,5 @@
 import '../public/style.scss';
+import 'bootstrap';
 import axios from 'axios';
 import { state, watchedState } from './view.js';
 import validate from './validate.js';
