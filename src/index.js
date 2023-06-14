@@ -35,3 +35,4 @@ form.addEventListener('submit', (e) => {
     }
   });
 });
+// запуск проверки
