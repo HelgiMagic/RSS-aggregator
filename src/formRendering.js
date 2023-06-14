@@ -4,6 +4,7 @@ const createBasedForm = (form, i18) => {
   const input = document.createElement('input');
   input.name = 'url';
   input.id = 'url-input';
+  input.setAttribute('aria-label', 'url');
 
   const label = document.createElement('label');
   label.setAttribute('for', 'url-input');
