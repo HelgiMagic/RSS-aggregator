@@ -20,6 +20,7 @@ module.exports = {
       filename: '[name].[contenthash].css',
     }),
   ],
+  mode: 'production',
   module: {
     rules: [
       {
