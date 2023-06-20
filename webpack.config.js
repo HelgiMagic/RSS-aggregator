@@ -1,8 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 // const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -16,24 +16,22 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
   ],
   mode: 'production',
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        test: /\.(scss)$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+        }, {
+          loader: 'postcss-loader',
+        }, {
+          loader: 'sass-loader',
+        }],
       },
-    ],
-  },
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin(),
     ],
   },
   devServer: {
