@@ -1,4 +1,4 @@
-import '../public/style.scss';
+import '../public/style.css';
 import 'bootstrap';
 import axios from 'axios';
 import { state, watchedState } from './view.js';
