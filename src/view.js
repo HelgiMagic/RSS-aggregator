@@ -24,7 +24,6 @@ i18.init({
 });
 
 const form = document.querySelector('.rss-form');
-renderForm(form, state, i18);
 
 export const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state') {
