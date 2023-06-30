@@ -15,6 +15,10 @@ form.addEventListener('submit', (e) => {
     if (typeof answer === 'string') {
       axios
         .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(inputValue)}`)
+        .catch(() => {
+          watchedState.form.state = 'error';
+          state.form.error = 'Ошибка сети';
+        })
         .then((response) => {
           try {
             const { posts, feed } = parseRSS(response.data.contents);
