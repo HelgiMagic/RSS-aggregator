@@ -17,7 +17,7 @@ form.addEventListener('submit', (e) => {
         .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(inputValue)}`)
         .catch(() => {
           state.form.error = 'networkError';
-          watchedState.form.state = 'error';
+          watchedState.form.state = 'invalid';
         })
         .then((response) => {
           try {
