@@ -16,8 +16,8 @@ form.addEventListener('submit', (e) => {
       axios
         .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(inputValue)}`)
         .catch(() => {
+          state.form.error = 'networkError';
           watchedState.form.state = 'error';
-          state.form.error = 'Ошибка сети';
         })
         .then((response) => {
           try {
