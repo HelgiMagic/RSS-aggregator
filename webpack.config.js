@@ -58,4 +58,7 @@ module.exports = {
     port: 666,
     hot: true,
   },
+  performance: {
+    hints: false,
+  },
 };
