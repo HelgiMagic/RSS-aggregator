@@ -1,5 +1,6 @@
 import axios from 'axios';
 import parseRSS from './parser';
+import parsePosts from './parsers/postParser.js';
 
 const checkNewPosts = (state, watchedState) => {
   watchedState.subscriptions.forEach((sub) => {
@@ -10,7 +11,8 @@ const checkNewPosts = (state, watchedState) => {
           const { posts } = parseRSS(response.data.contents);
           const oldUrls = state.posts.flat().map((post) => post.url);
           const newPosts = posts.filter(({ url }) => !oldUrls.includes(url));
-          watchedState.posts.push(newPosts);
+          const newHtmlPosts = parsePosts(newPosts);
+          watchedState.posts.push(newHtmlPosts);
         } catch (err) { console.log(err); }
       });
   });

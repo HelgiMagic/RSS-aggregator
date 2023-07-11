@@ -1,31 +1,11 @@
 import onChange from 'on-change';
-import i18next from 'i18next';
-import resources from './locales/locales.js';
+import { state, i18 } from './init.js';
 import renderForm from './formRendering.js';
 import { renderNewPosts, renderNewFeed } from './contentRendering.js';
-import checkNewPosts from './checkNewPosts.js';
-
-export const state = {
-  lang: 'ru',
-  form: {
-    state: 'calm',
-    error: '',
-  },
-  subscriptions: [],
-  posts: [],
-  feeds: [],
-};
-
-const i18 = i18next.createInstance();
-i18.init({
-  lng: state.lang,
-  debug: true,
-  resources,
-});
 
 const form = document.querySelector('.rss-form');
 
-export const watchedState = onChange(state, (path, value) => {
+const watchedState = onChange(state, (path, value) => {
   if (path === 'form.state') {
     if (value === 'calm' || value === 'success') renderForm(form, state, i18);
 
@@ -48,10 +28,4 @@ export const watchedState = onChange(state, (path, value) => {
   }
 });
 
-const interval = setInterval(() => {
-  try {
-    checkNewPosts(state, watchedState);
-  } catch (e) {
-    clearInterval(interval);
-  }
-}, 5000);
+export default watchedState;
