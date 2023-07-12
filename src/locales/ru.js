@@ -8,5 +8,6 @@ export default {
     RSSNotFound: 'Ресурс не содержит валидный RSS',
     successfullyUploaded: 'RSS успешно загружен',
     networkError: 'Ошибка сети',
+    view: 'Просмотр',
   },
 };

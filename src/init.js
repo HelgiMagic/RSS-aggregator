@@ -6,12 +6,13 @@ import validate from './validate.js';
 import parseRSS from './parser';
 import resources from './locales/locales.js';
 import checkNewPosts from './checkNewPosts.js';
+import changeModalContent from './changeModal';
 
 export const state = {
   lang: 'ru',
   form: {
     state: 'calm',
-    error: '',
+    error: null,
   },
   posts: [],
   feeds: [],
@@ -46,6 +47,11 @@ const runApp = (watchedState) => {
         const parent = e.target.parentElement;
         const a = parent.querySelector('a');
         a.className = 'fw-normal';
+
+        const link = a.href;
+        const post = state.posts.flat().find(({ url }) => url === link);
+        const { url, title, description } = post;
+        changeModalContent(title, description, url);
       }
     });
 
