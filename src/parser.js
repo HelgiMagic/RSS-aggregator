@@ -1,6 +1,4 @@
-// import changeModalContent from './changeModal.js';
-
-const parseRSS = (content) => {
+const parseRSS = (content, feedUrl) => {
   const html = new DOMParser().parseFromString(content, 'text/xml');
   const rss = html.querySelector('rss');
   if (!rss) throw new Error('RSSNotFound');
@@ -8,7 +6,7 @@ const parseRSS = (content) => {
   const feedTitle = rss.querySelector('title').textContent;
   const feedDescription = rss.querySelector('description').textContent;
 
-  const feed = { title: feedTitle, description: feedDescription };
+  const feed = { title: feedTitle, description: feedDescription, feedUrl };
 
   const unparsedPosts = [...rss.querySelectorAll('item')];
   const posts = unparsedPosts.map((post) => {
