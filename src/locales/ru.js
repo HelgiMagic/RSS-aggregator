@@ -9,5 +9,10 @@ export default {
     successfullyUploaded: 'RSS успешно загружен',
     networkError: 'Ошибка сети',
     view: 'Просмотр',
+    h1: 'RSS агрегатор',
+    h3: 'Начните читать RSS сегодня! Это легко, это красиво.',
+    example: 'Пример: https://ru.hexlet.io/lessons.rss',
+    posts: 'Посты',
+    feeds: 'Фиды',
   },
 };

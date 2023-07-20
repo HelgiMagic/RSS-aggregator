@@ -40,6 +40,7 @@ const renderForm = (form, globalState, i18, inputValue) => {
     input.focus();
 
     input.value = inputValue;
+    input.classList.remove('is-invalid');
     button.setAttribute('disabled', '');
     warningMessage.classList.add('invisible');
     warningMessage.textContent = '.';

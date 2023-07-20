@@ -7,6 +7,7 @@ import parseRSS from './parser';
 import resources from './locales/locales.js';
 import checkNewPosts from './checkNewPosts.js';
 import changeModalContent from './changeModal';
+import translateStatic from './translateStaticLines';
 
 export const state = {
   lang: 'ru',
@@ -34,6 +35,7 @@ const runApp = (watchedState) => {
       }
     }, 5000);
 
+    translateStatic(document, i18);
     const form = document.querySelector('.rss-form');
     const postsC = document.querySelector('.posts');
 
