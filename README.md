@@ -6,7 +6,8 @@
 
 A simple and convenient service for reading RSS feeds.
 
-![image](https://user-images.githubusercontent.com/113669521/228578148-bfb6b771-dbd8-416a-ae66-ba49281d3cf4.png)
+![image]![image_2023-07-26_15-07-33](https://github.com/HelgiMagic/frontend-project-11/assets/113669521/92fd886a-d922-4e7c-84fb-871ecb984315)
+
 
 ### How do I start using the project?
 
