@@ -66,7 +66,10 @@ const runApp = (watchedState) => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       watchedState.form.state = 'sending';
-      const inputValue = document.querySelector('input').value.trim();
+
+      const formData = new FormData(e.target);
+      const inputValue = formData.get('url').trim();
+
       validate(inputValue, state).then((answer) => {
         if (typeof answer === 'string') {
           axios
