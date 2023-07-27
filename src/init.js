@@ -6,8 +6,8 @@ import validate from './validate.js';
 import parseRSS from './parser';
 import resources from './locales/locales.js';
 import checkNewPosts from './checkNewPosts.js';
-import changeModalContent from './changeModal';
 import translateStatic from './translateStaticLines';
+import getUrl from './getAxios.js';
 
 export const state = {
   lang: 'ru',
@@ -16,7 +16,11 @@ export const state = {
     error: null,
   },
   posts: [],
+  watchedPosts: [],
   feeds: [],
+  modal: {
+    title: null, description: null, link: null,
+  },
 };
 
 export const i18 = i18next.createInstance();
@@ -27,13 +31,14 @@ const runApp = (watchedState) => {
     debug: true,
     resources,
   }).then(() => {
-    const interval = setInterval(() => {
+    const timeoutF = () => setTimeout(() => {
       try {
         checkNewPosts(state, watchedState);
-      } catch (e) {
-        clearInterval(interval);
-      }
+        timeoutF();
+      } catch (e) { console.log('ошибка в обновлении ленты'); }
     }, 5000);
+
+    timeoutF();
 
     translateStatic(document, i18);
     const form = document.querySelector('.rss-form');
@@ -42,7 +47,8 @@ const runApp = (watchedState) => {
     postsC.addEventListener('click', (e) => {
       const { tagName } = e.target;
       if (tagName === 'A') {
-        e.target.className = 'fw-normal';
+        const url = e.target.href;
+        watchedState.watchedPosts.push(url);
       }
 
       if (tagName === 'BUTTON') {
@@ -53,7 +59,7 @@ const runApp = (watchedState) => {
         const link = a.href;
         const post = state.posts.flat().find(({ url }) => url === link);
         const { url, title, description } = post;
-        changeModalContent(title, description, url);
+        watchedState.modal = { title, description, url };
       }
     });
 
@@ -64,7 +70,7 @@ const runApp = (watchedState) => {
       validate(inputValue, state).then((answer) => {
         if (typeof answer === 'string') {
           axios
-            .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(inputValue)}`)
+            .get(getUrl(inputValue))
             .catch(() => {
               state.form.error = 'networkError';
               watchedState.form.state = 'invalid';

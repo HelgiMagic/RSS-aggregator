@@ -6,6 +6,7 @@ export default {
     rssLink: 'Cсылка RSS',
     required: 'Не введено значение',
     RSSNotFound: 'Ресурс не содержит валидный RSS',
+    RSSParseError: 'Ошибка обработки RSS',
     successfullyUploaded: 'RSS успешно загружен',
     networkError: 'Ошибка сети',
     view: 'Просмотр',

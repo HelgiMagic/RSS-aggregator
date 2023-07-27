@@ -1,11 +1,12 @@
 import axios from 'axios';
 import parseRSS from './parser';
+import getUrl from './getAxios.js';
 
 const checkNewPosts = (state, watchedState) => {
   const subs = state.feeds.map((feed) => feed.feedUrl);
   subs.forEach((sub) => {
     axios
-      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(sub)}`)
+      .get(getUrl(sub))
       .then((response) => {
         try {
           const { posts } = parseRSS(response.data.contents);

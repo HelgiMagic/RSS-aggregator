@@ -4,6 +4,7 @@ import renderForm from './formRendering.js';
 import { renderNewPosts, renderNewFeed } from './contentRendering.js';
 import parsePosts from './parsers/postParser.js';
 import parseFeed from './parsers/feedParser.js';
+import changeModalContent from './changeModal.js';
 
 const form = document.querySelector('.rss-form');
 
@@ -30,6 +31,17 @@ const watchedState = onChange(state, (path, value) => {
 
     const htmlFeeds = state.feeds.map((feed) => parseFeed(feed));
     renderNewFeed(htmlFeeds);
+  }
+
+  if (path === 'watchedPosts') {
+    const newWatch = state.watchedPosts.at(-1);
+    const a = document.querySelector(`a[href="${newWatch}"`);
+    a.className = 'fw-normal';
+  }
+
+  if (path === 'modal') {
+    const { title, description, url } = state.modal;
+    changeModalContent(title, description, url);
   }
 });
 
