@@ -96,27 +96,24 @@ const runApp = () => {
       const formData = new FormData(e.target);
       const inputValue = formData.get('url').trim();
 
-      validate(inputValue, state).then(() => {
-        axios
-          .get(getUrl(inputValue))
-          .then((response) => {
-            const { posts, feed } = parseRSS(response.data.contents, inputValue);
+      validate(inputValue, state)
+        .then(() => axios.get(getUrl(inputValue)))
+        .then((response) => {
+          const { posts, feed } = parseRSS(response.data.contents, inputValue);
 
-            console.log(posts);
+          console.log(posts);
 
-            watchedState.posts.push(posts);
-            watchedState.feeds.push(feed);
+          watchedState.posts.push(posts);
+          watchedState.feeds.push(feed);
 
-            state.form.error = 'successfullyUploaded';
-            watchedState.form.state = 'success';
-          })
-          .catch((err) => {
-            state.form.error = err.message;
-            watchedState.form.state = 'invalid';
-          });
-      });
+          state.form.error = 'successfullyUploaded';
+          watchedState.form.state = 'success';
+        })
+        .catch((err) => {
+          state.form.error = err.message;
+          watchedState.form.state = 'invalid';
+        });
     });
   });
 };
-
 export default runApp;
