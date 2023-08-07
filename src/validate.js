@@ -7,7 +7,8 @@ const validate = (url, globalState) => {
   const schema = string()
     .url().required('required')
     .notOneOf(subs);
-  return schema.validate(url).catch((e) => e);
+
+  return schema.validate(url);
 };
 
 export default validate;
