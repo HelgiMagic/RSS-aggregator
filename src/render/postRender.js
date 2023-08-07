@@ -1,6 +1,4 @@
-import { i18 } from '../init.js';
-
-const parsePosts = (posts) => posts.map(({ url, title }) => {
+const renderPosts = (posts, i18) => posts.map(({ url, title }) => {
   const a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('target', '_blank');
@@ -21,4 +19,4 @@ const parsePosts = (posts) => posts.map(({ url, title }) => {
   return { url, element: li };
 });
 
-export default parsePosts;
+export default renderPosts;

@@ -2,35 +2,61 @@ import '../public/style.scss';
 import 'bootstrap';
 import axios from 'axios';
 import i18next from 'i18next';
+import { setLocale } from 'yup';
 import validate from './validate.js';
 import parseRSS from './parser';
 import resources from './locales/locales.js';
 import checkNewPosts from './checkNewPosts.js';
 import translateStatic from './translateStaticLines';
 import getUrl from './getAxios.js';
-
-export const state = {
-  lang: 'ru',
-  form: {
-    state: 'calm',
-    error: null,
-  },
-  posts: [],
-  watchedPosts: [],
-  feeds: [],
-  modal: {
-    title: null, description: null, link: null,
-  },
-};
+import createWatchedState from './view';
 
 export const i18 = i18next.createInstance();
 
-const runApp = (watchedState) => {
+const runApp = () => {
+  const state = {
+    lang: 'ru',
+    form: {
+      state: 'calm',
+      error: null,
+    },
+    posts: [],
+    watchedPosts: [],
+    feeds: [],
+    modal: {
+      title: null, description: null, link: null,
+    },
+  };
+
+  const elements = {
+    form: document.querySelector('.rss-form'),
+    formInput: document.querySelector('.rss-form input'),
+    formButton: document.querySelector('.rss-form button'),
+    modal: document.getElementById('modal'),
+    modalTitle: document.querySelector('.modal-title'),
+    modalDescription: document.querySelector('.modal-body p'),
+    modalButton: document.querySelector('.full-article'),
+    feedsUL: document.querySelector('.feeds ul'),
+    postsUL: document.querySelector('.posts ul'),
+    warningMessage: document.querySelector('.warning'),
+  };
+
+  setLocale({
+    string: {
+      url: 'notAUrl',
+    },
+    mixed: {
+      notOneOf: 'alreadySubscribed',
+    },
+  });
+
   i18.init({
     lng: state.lang,
     debug: true,
     resources,
   }).then(() => {
+    const watchedState = createWatchedState(elements, state, i18);
+
     const timeoutF = () => setTimeout(() => {
       try {
         checkNewPosts(state, watchedState);

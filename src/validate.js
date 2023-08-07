@@ -1,5 +1,5 @@
 import {
-  string, setLocale,
+  string,
 } from 'yup';
 
 const validate = (url, globalState) => {
@@ -9,14 +9,5 @@ const validate = (url, globalState) => {
     .notOneOf(subs);
   return schema.validate(url).catch((e) => e);
 };
-
-setLocale({
-  string: {
-    url: 'notAUrl',
-  },
-  mixed: {
-    notOneOf: 'alreadySubscribed',
-  },
-});
 
 export default validate;

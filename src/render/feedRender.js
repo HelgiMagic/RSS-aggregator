@@ -1,4 +1,4 @@
-const parseFeed = ({ title, description }) => {
+const renderFeed = ({ title, description }) => {
   const h6 = document.createElement('h6');
   const p = document.createElement('p');
   p.classList.add('small');
@@ -12,4 +12,4 @@ const parseFeed = ({ title, description }) => {
   return feed;
 };
 
-export default parseFeed;
+export default renderFeed;
