@@ -23,6 +23,8 @@ npm link
 ```
 4. run the site build using this command : 
 ```
-npm run bild
+npm run build
 ```
 5. Go to the 'dist' folder and open the file index.html to use a ready-made website.
+
+**OR** use or use an already working website: https://rss-website.onrender.com/

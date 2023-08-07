@@ -111,6 +111,7 @@ const runApp = () => {
         })
         .catch((err) => {
           state.form.error = err.message;
+          // if (err.message === 'Network Error') state.form.error = 'networkError';
           watchedState.form.state = 'invalid';
         });
     });
