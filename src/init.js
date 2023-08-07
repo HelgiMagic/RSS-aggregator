@@ -111,7 +111,6 @@ const runApp = () => {
         })
         .catch((err) => {
           state.form.error = err.message;
-          console.log('ТЕСТ!!', err.message);
           watchedState.form.state = 'invalid';
         });
     });
