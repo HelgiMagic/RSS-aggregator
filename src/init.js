@@ -65,14 +65,15 @@ const runApp = () => {
     elements.postsContainer.addEventListener('click', (e) => {
       const { tagName } = e.target;
       if (tagName === 'A') {
-        const url = e.target.href;
-        watchedState.watchedPosts.push(url);
+        const aUrl = e.target.href;
+        watchedState.watchedPosts.push(aUrl);
       }
 
       if (tagName === 'BUTTON') {
         const parent = e.target.parentElement;
         const a = parent.querySelector('a');
-        a.className = 'fw-normal';
+        const aUrl = a.href;
+        watchedState.watchedPosts.push(aUrl);
 
         const link = a.href;
         const post = state.posts.flat().find(({ url }) => url === link);
