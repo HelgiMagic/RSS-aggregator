@@ -8,7 +8,7 @@ export default {
     RSSNotFound: 'Ресурс не содержит валидный RSS',
     RSSParseError: 'Ошибка обработки RSS',
     successfullyUploaded: 'RSS успешно загружен',
-    'Network Error': 'Ошибка сети',
+    networkError: 'Ошибка сети',
     view: 'Просмотр',
     h1: 'RSS агрегатор',
     h3: 'Начните читать RSS сегодня! Это легко, это красиво.',

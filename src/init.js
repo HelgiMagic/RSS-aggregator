@@ -1,6 +1,6 @@
 import '../public/style.scss';
 import 'bootstrap';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 import validate from './validate.js';
@@ -37,6 +37,7 @@ const runApp = () => {
     modalDescription: document.querySelector('.modal-body p'),
     modalButton: document.querySelector('.full-article'),
     feedsUL: document.querySelector('.feeds ul'),
+    postsContainer: document.querySelector('.posts'),
     postsUL: document.querySelector('.posts ul'),
     warningMessage: document.querySelector('.warning'),
   };
@@ -57,20 +58,11 @@ const runApp = () => {
   }).then(() => {
     const watchedState = createWatchedState(elements, state, i18);
 
-    const timeoutF = () => setTimeout(() => {
-      try {
-        checkNewPosts(state, watchedState);
-        timeoutF();
-      } catch (e) { console.log('ошибка в обновлении ленты'); }
-    }, 5000);
-
-    timeoutF();
+    checkNewPosts(watchedState);
 
     translateStatic(document, i18);
-    const form = document.querySelector('.rss-form');
-    const postsC = document.querySelector('.posts');
 
-    postsC.addEventListener('click', (e) => {
+    elements.postsContainer.addEventListener('click', (e) => {
       const { tagName } = e.target;
       if (tagName === 'A') {
         const url = e.target.href;
@@ -89,7 +81,7 @@ const runApp = () => {
       }
     });
 
-    form.addEventListener('submit', (e) => {
+    elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
       watchedState.form.state = 'sending';
 
@@ -101,8 +93,6 @@ const runApp = () => {
         .then((response) => {
           const { posts, feed } = parseRSS(response.data.contents, inputValue);
 
-          console.log(posts);
-
           watchedState.posts.push(posts);
           watchedState.feeds.push(feed);
 
@@ -110,8 +100,9 @@ const runApp = () => {
           watchedState.form.state = 'success';
         })
         .catch((err) => {
-          state.form.error = err.message;
-          // if (err.message === 'Network Error') state.form.error = 'networkError';
+          if (isAxiosError(err)) state.form.error = 'networkError';
+          else state.form.error = err.message;
+
           watchedState.form.state = 'invalid';
         });
     });

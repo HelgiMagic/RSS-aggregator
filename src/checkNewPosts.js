@@ -2,20 +2,26 @@ import axios from 'axios';
 import parseRSS from './parser';
 import getUrl from './getAxios.js';
 
-const checkNewPosts = async (state, watchedState) => {
-  const subs = state.feeds.map((feed) => feed.feedUrl);
-  const responsesC = subs.map((sub) => axios.get(getUrl(sub)));
-
-  const promise = Promise.all(responsesC);
-  promise.then((responses) => responses.forEach((response) => {
-    try {
+const checkNewPosts = (watchedState) => {
+  const subs = watchedState.feeds.map((feed) => feed.feedUrl);
+  const responses = subs.map((sub) => axios
+    .get(getUrl(sub))
+    .then((response) => {
       const { posts } = parseRSS(response.data.contents);
-      const oldUrls = state.posts.flat().map((post) => post.url);
+      const oldUrls = watchedState.posts.flat().map((post) => post.url);
 
       const newPosts = posts.filter(({ url }) => !oldUrls.includes(url));
       watchedState.posts.push(newPosts);
-    } catch (err) { console.log(err); }
-  }));
+    })
+    .catch((e) => console.log(e)));
+
+  Promise.allSettled(responses);
+
+  setTimeout(() => {
+    try {
+      checkNewPosts(watchedState);
+    } catch (e) { console.log('ошибка в обновлении ленты'); }
+  }, 5000);
 };
 
 export default checkNewPosts;
