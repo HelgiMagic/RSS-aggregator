@@ -15,13 +15,12 @@ const checkNewPosts = (watchedState) => {
     })
     .catch((e) => console.log(e)));
 
-  Promise.allSettled(responses);
-
-  setTimeout(() => {
-    try {
-      checkNewPosts(watchedState);
-    } catch (e) { console.log('ошибка в обновлении ленты'); }
-  }, 5000);
+  Promise.allSettled(responses)
+    .finally(() => setTimeout(() => {
+      try {
+        checkNewPosts(watchedState);
+      } catch (e) { console.log('ошибка в обновлении ленты'); }
+    }, 5000));
 };
 
 export default checkNewPosts;
