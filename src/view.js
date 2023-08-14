@@ -18,7 +18,7 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
   }
 
   if (path === 'posts') {
-    const htmlPosts = state.posts.map((posts) => renderPosts(posts, i18));
+    const htmlPosts = renderPosts(state.posts.at(-1), i18);
     renderNewPosts(elements, htmlPosts);
   }
 
@@ -28,7 +28,7 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
       document.querySelector('.posts').classList.remove('invisible');
     }
 
-    const htmlFeeds = state.feeds.map((feed) => renderFeed(feed));
+    const htmlFeeds = renderFeed(state.feeds.at(-1));
     renderNewFeed(elements, htmlFeeds);
   }
 
