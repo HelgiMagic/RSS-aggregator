@@ -8,7 +8,7 @@ import parseRSS from './parser';
 import resources from './locales/locales.js';
 import checkNewPosts from './checkNewPosts.js';
 import translateStatic from './translateStaticLines';
-import getUrl from './getAxios.js';
+import getUrl from './getUrl.js';
 import createWatchedState from './view';
 
 export const i18 = i18next.createInstance();
@@ -21,7 +21,7 @@ const runApp = () => {
       error: null,
     },
     posts: [],
-    watchedPosts: [],
+    watchedPostsIds: [],
     feeds: [],
     modal: {
       title: null, description: null, link: null,
@@ -73,7 +73,7 @@ const runApp = () => {
         const parent = e.target.parentElement;
         const a = parent.querySelector('a');
         const aUrl = a.href;
-        watchedState.watchedPosts.push(aUrl);
+        watchedState.watchedPostsIds.push(aUrl);
 
         const link = a.href;
         const post = state.posts.flat().find(({ url }) => url === link);
@@ -92,7 +92,8 @@ const runApp = () => {
       validate(inputValue, state)
         .then(() => axios.get(getUrl(inputValue)))
         .then((response) => {
-          const { posts, feed } = parseRSS(response.data.contents, inputValue);
+          const { posts, feed } = parseRSS(response.data.contents);
+          feed.feedUrl = inputValue;
 
           watchedState.posts.push(posts);
           watchedState.feeds.push(feed);

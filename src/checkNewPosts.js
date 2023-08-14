@@ -1,6 +1,6 @@
 import axios from 'axios';
 import parseRSS from './parser';
-import getUrl from './getAxios.js';
+import getUrl from './getUrl.js';
 
 const checkNewPosts = (watchedState) => {
   const subs = watchedState.feeds.map((feed) => feed.feedUrl);
@@ -17,15 +17,8 @@ const checkNewPosts = (watchedState) => {
 
   Promise.allSettled(responses)
     .finally(() => setTimeout(() => {
-      try {
-        checkNewPosts(watchedState);
-      } catch (e) { console.log('ошибка в обновлении ленты'); }
+      checkNewPosts(watchedState);
     }, 5000));
 };
 
 export default checkNewPosts;
-
-/*
-мы всем элементам даём свойство url и (element)
-потом получаем только те значения которых нет в изначальной версии массива
-*/
