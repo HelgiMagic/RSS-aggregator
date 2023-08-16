@@ -104,8 +104,8 @@ const runApp = () => {
         })
         .catch((err) => {
           if (isAxiosError(err)) watchedState.form.error = 'networkError';
-          if (err.isParseError) watchedState.form.error = err.message;
-          if (err.name === 'ValidationError') watchedState.form.error = err.message;
+          else if (err.isParseError === true) watchedState.form.error = err.message;
+          else if (err.name === 'ValidationError') watchedState.form.error = err.message;
           else watchedState.form.error = 'somethingWrong';
 
           watchedState.form.status = 'invalid';
