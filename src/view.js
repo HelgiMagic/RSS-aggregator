@@ -1,25 +1,28 @@
 import onChange from 'on-change';
 import renderForm from './render/formRendering.js';
-import { renderNewPosts, renderNewFeed } from './render/contentRendering.js';
-import renderPosts from './render/postRender.js';
-import renderFeed from './render/feedRender.js';
+import {
+  renderPosts, renderFeed, rerenderPosts, renderNewFeed,
+} from './render/contentRendering.js';
 import changeModalContent from './render/changeModal.js';
 
-const form = document.querySelector('.rss-form');
-
 const createWatchedState = (elements, state, i18) => onChange(state, (path, value) => {
-  if (path === 'form.state') {
-    if (value === 'calm' || value === 'success') renderForm(elements, form, state, i18);
+  if (path === 'form.status') {
+    if (value === 'calm' || value === 'success') renderForm(elements, state, i18);
 
     else {
       const { value: inputValue } = document.querySelector('input');
-      renderForm(elements, form, state, i18, inputValue);
+      renderForm(elements, state, i18, inputValue);
     }
   }
 
   if (path === 'posts') {
-    const htmlPosts = renderPosts(state.posts.at(-1), i18);
-    renderNewPosts(elements, htmlPosts);
+    const htmlPosts = state.posts.map((post) => renderPosts(post, i18));
+    rerenderPosts(elements, htmlPosts);
+  }
+
+  if (path.endsWith('.watched')) {
+    const htmlPosts = state.posts.map((post) => renderPosts(post, i18));
+    rerenderPosts(elements, htmlPosts);
   }
 
   if (path === 'feeds') {
@@ -30,12 +33,6 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
 
     const htmlFeeds = renderFeed(state.feeds.at(-1));
     renderNewFeed(elements, htmlFeeds);
-  }
-
-  if (path === 'watchedPosts') {
-    const newWatch = state.watchedPosts.at(-1);
-    const a = document.querySelector(`a[href="${newWatch}"`);
-    a.className = 'fw-normal';
   }
 
   if (path === 'modal') {

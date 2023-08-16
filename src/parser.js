@@ -1,17 +1,14 @@
 const parseRSS = (content) => {
   const html = new DOMParser().parseFromString(content, 'text/xml');
 
-  const notFoundErr = new Error('RSSNotFound');
-  notFoundErr.isParseError = true;
-
-  const parseErr = new Error('RSSParseError');
-  parseErr.isParseError = true;
+  const RSSParseError = new Error('RSSParseError');
+  RSSParseError.isParseError = true;
 
   const rss = html.querySelector('rss');
-  if (!rss) throw notFoundErr;
+  if (!rss) throw RSSParseError;
 
-  const parseError = rss.querySelector('parsererror');
-  if (parseError) throw parseErr;
+  const parseError = html.querySelector('rss parsererror');
+  if (parseError) throw RSSParseError;
 
   const feedTitle = rss.querySelector('title').textContent;
   const feedDescription = rss.querySelector('description').textContent;

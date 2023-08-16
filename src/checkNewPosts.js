@@ -8,10 +8,11 @@ const checkNewPosts = (watchedState) => {
     .get(getUrl(sub))
     .then((response) => {
       const { posts } = parseRSS(response.data.contents);
-      const oldUrls = watchedState.posts.flat().map((post) => post.url);
+      const oldUrls = watchedState.posts.map((post) => post.url);
 
       const newPosts = posts.filter(({ url }) => !oldUrls.includes(url));
-      watchedState.posts.push(newPosts);
+      newPosts.reverse();
+      watchedState.posts.push(...newPosts);
     })
     .catch((e) => console.log(e)));
 

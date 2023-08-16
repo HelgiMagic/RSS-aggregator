@@ -7,6 +7,7 @@ export default {
     required: 'Не введено значение',
     RSSNotFound: 'Ресурс не содержит валидный RSS',
     RSSParseError: 'Ошибка обработки RSS',
+    somethingWrong: 'Что-то пошло не так',
     successfullyUploaded: 'RSS успешно загружен',
     networkError: 'Ошибка сети',
     view: 'Просмотр',

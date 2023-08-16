@@ -17,11 +17,10 @@ const runApp = () => {
   const state = {
     lang: 'ru',
     form: {
-      state: 'calm',
+      status: 'calm',
       error: null,
     },
     posts: [],
-    watchedPostsIds: [],
     feeds: [],
     modal: {
       title: null, description: null, link: null,
@@ -66,17 +65,18 @@ const runApp = () => {
       const { tagName } = e.target;
       if (tagName === 'A') {
         const aUrl = e.target.href;
-        watchedState.watchedPosts.push(aUrl);
+        const post = watchedState.posts.find(({ url }) => url === aUrl);
+        post.watched = true;
       }
 
       if (tagName === 'BUTTON') {
         const parent = e.target.parentElement;
         const a = parent.querySelector('a');
-        const aUrl = a.href;
-        watchedState.watchedPostsIds.push(aUrl);
 
-        const link = a.href;
-        const post = state.posts.flat().find(({ url }) => url === link);
+        const aUrl = a.href;
+        const post = watchedState.posts.find(({ url }) => url === aUrl);
+        post.watched = true;
+
         const { url, title, description } = post;
         watchedState.modal = { title, description, url };
       }
@@ -84,7 +84,7 @@ const runApp = () => {
 
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      watchedState.form.state = 'sending';
+      watchedState.form.status = 'sending';
 
       const formData = new FormData(e.target);
       const inputValue = formData.get('url').trim();
@@ -95,17 +95,20 @@ const runApp = () => {
           const { posts, feed } = parseRSS(response.data.contents);
           feed.feedUrl = inputValue;
 
-          watchedState.posts.push(posts);
+          posts.reverse();
+          watchedState.posts.push(...posts);
           watchedState.feeds.push(feed);
 
-          state.form.error = 'successfullyUploaded';
-          watchedState.form.state = 'success';
+          watchedState.form.error = 'successfullyUploaded';
+          watchedState.form.status = 'success';
         })
         .catch((err) => {
-          if (isAxiosError(err)) state.form.error = 'networkError';
-          else state.form.error = err.message;
+          if (isAxiosError(err)) watchedState.form.error = 'networkError';
+          if (err.isParseError) watchedState.form.error = err.message;
+          if (err.name === 'ValidationError') watchedState.form.error = err.message;
+          else watchedState.form.error = 'somethingWrong';
 
-          watchedState.form.state = 'invalid';
+          watchedState.form.status = 'invalid';
         });
     });
   });

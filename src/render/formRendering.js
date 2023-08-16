@@ -1,14 +1,14 @@
-const renderForm = (elements, form, globalState, i18, inputValue) => {
-  if (globalState.form.state === 'calm') {
-    form.reset();
+const renderForm = (elements, globalState, i18, inputValue) => {
+  if (globalState.form.status === 'calm') {
+    elements.form.reset();
     elements.formInput.focus();
 
     elements.warningMessage.classList.add('invisible');
     elements.warningMessage.textContent = '.';
   }
 
-  if (globalState.form.state === 'success') {
-    form.reset();
+  if (globalState.form.status === 'success') {
+    elements.form.reset();
     elements.formInput.focus();
     elements.formButton.removeAttribute('disabled');
     elements.formInput.classList.remove('is-invalid');
@@ -19,8 +19,8 @@ const renderForm = (elements, form, globalState, i18, inputValue) => {
     elements.warningMessage.setAttribute('style', 'color: green');
   } else elements.warningMessage.removeAttribute('style');
 
-  if (globalState.form.state === 'invalid') {
-    form.reset();
+  if (globalState.form.status === 'invalid') {
+    elements.form.reset();
     elements.formInput.focus();
     elements.formButton.removeAttribute('disabled');
 
@@ -31,8 +31,8 @@ const renderForm = (elements, form, globalState, i18, inputValue) => {
     elements.warningMessage.classList.remove('invisible');
   }
 
-  if (globalState.form.state === 'sending') {
-    form.reset();
+  if (globalState.form.status === 'sending') {
+    elements.form.reset();
     elements.formInput.focus();
 
     elements.formInput.value = inputValue;
