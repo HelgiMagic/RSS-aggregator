@@ -5,9 +5,7 @@ const parseRSS = (content) => {
   RSSParseError.isParseError = true;
 
   const rss = html.querySelector('rss');
-  if (!rss) throw RSSParseError;
-
-  const parseError = html.querySelector('rss parsererror');
+  const parseError = html.querySelector('parsererror');
   if (parseError) throw RSSParseError;
 
   const feedTitle = rss.querySelector('title').textContent;
