@@ -1,7 +1,7 @@
 import onChange from 'on-change';
 import renderForm from './render/formRendering.js';
 import {
-  renderPosts, renderFeed, rerenderPosts, renderNewFeed,
+  renderPost, renderFeed, rerenderPosts, renderNewFeed,
 } from './render/contentRendering.js';
 import changeModalContent from './render/changeModal.js';
 
@@ -16,12 +16,12 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
   }
 
   if (path === 'posts') {
-    const htmlPosts = state.posts.map((post) => renderPosts(post, i18));
+    const htmlPosts = state.posts.map((post) => renderPost(post, i18));
     rerenderPosts(elements, htmlPosts);
   }
 
   if (path.endsWith('.watched')) {
-    const htmlPosts = state.posts.map((post) => renderPosts(post, i18));
+    const htmlPosts = state.posts.map((post) => renderPost(post, i18));
     rerenderPosts(elements, htmlPosts);
   }
 
@@ -31,8 +31,8 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
       document.querySelector('.posts').classList.remove('invisible');
     }
 
-    const htmlFeeds = renderFeed(state.feeds.at(-1));
-    renderNewFeed(elements, htmlFeeds);
+    // const htmlFeed = renderFeed(state.feeds.at(-1));
+    renderNewFeed(elements, renderFeed(state.feeds.at(-1)));
   }
 
   if (path === 'modal') {

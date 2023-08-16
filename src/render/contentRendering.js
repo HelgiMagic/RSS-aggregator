@@ -12,7 +12,7 @@ const renderFeed = ({ title, description }) => {
   return feed;
 };
 
-const renderPosts = ({ url, title, watched }, i18) => {
+const renderPost = ({ url, title, watched }, i18) => {
   const a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('target', '_blank');
@@ -47,5 +47,5 @@ const renderNewFeed = (elements, feed) => {
 };
 
 export {
-  renderPosts, renderFeed, rerenderPosts, renderNewFeed,
+  renderPost, renderFeed, rerenderPosts, renderNewFeed,
 };
