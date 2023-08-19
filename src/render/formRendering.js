@@ -3,8 +3,7 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.form.reset();
     elements.formInput.focus();
 
-    elements.warningMessage.classList.add('invisible');
-    elements.warningMessage.textContent = '.';
+    elements.warningMessage.textContent = '';
   }
 
   if (globalState.form.status === 'success') {
@@ -13,9 +12,8 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.formButton.removeAttribute('disabled');
     elements.formInput.classList.remove('is-invalid');
 
-    elements.warningMessage.classList.remove('invisible');
     elements.warningMessage.textContent = i18.t(globalState.form.message);
-    elements.warningMessage.setAttribute('style', 'color: green');
+    elements.warningMessage.setAttribute('style', 'color: rgba(25,135,84)');
   } else elements.warningMessage.removeAttribute('style');
 
   if (globalState.form.status === 'invalid') {
@@ -27,7 +25,6 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.formInput.value = inputValue;
 
     elements.warningMessage.textContent = i18.t(globalState.form.message);
-    elements.warningMessage.classList.remove('invisible');
   }
 
   if (globalState.form.status === 'sending') {
@@ -37,8 +34,7 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.formInput.value = inputValue;
     elements.formInput.classList.remove('is-invalid');
     elements.formButton.setAttribute('disabled', '');
-    elements.warningMessage.classList.add('invisible');
-    elements.warningMessage.textContent = '.';
+    elements.warningMessage.textContent = '';
   }
 };
 

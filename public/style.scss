@@ -17,8 +17,14 @@
   align-items: start;
   color: white;
 
+
+  .warning-container {
+    height: 50px;
+  }
+
   .warning {
     color: #dc3545;
+    position: absolute;
   }
 }
 
@@ -44,7 +50,7 @@
   }
 
   #url-input {
-    border-radius: 10px;
+    border-radius: 5px;
     flex-grow: 8;
 
     font-size: 15px;
@@ -53,6 +59,7 @@
 
   .submit-button {
     flex-grow: 2;
+    border-radius: 5px;
 
     margin-left: 20px;
   }
