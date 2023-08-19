@@ -2,7 +2,7 @@ import '../public/style.scss';
 import 'bootstrap';
 import axios, { isAxiosError } from 'axios';
 import i18next from 'i18next';
-import { setLocale } from 'yup';
+import { setLocale, string } from 'yup';
 import validate from './validate.js';
 import parseRSS from './parser';
 import resources from './locales/locales.js';
@@ -10,17 +10,32 @@ import checkNewPosts from './checkNewPosts.js';
 import translateStatic from './translateStaticLines';
 import getUrl from './getUrl.js';
 import createWatchedState from './view';
+import getUniqId from './uniqId';
 
 export const i18 = i18next.createInstance();
+
+const getProcessErrorType = (err) => {
+  if (isAxiosError(err)) {
+    return 'networkError';
+  }
+
+  if (err.isParseError || err.name === 'ValidationError') {
+    return err.message;
+  }
+
+  return 'somethingWrong';
+};
 
 const runApp = () => {
   const state = {
     lang: 'ru',
     form: {
       status: 'calm',
-      error: null,
+      message: null,
     },
     posts: [],
+    postsIds: [],
+    watchedPostsIds: [],
     feeds: [],
     modal: {
       title: null, description: null, link: null,
@@ -50,6 +65,8 @@ const runApp = () => {
     },
   });
 
+  const baseUrlSchema = string().url().required('required');
+
   i18.init({
     lng: state.lang,
     debug: true,
@@ -66,7 +83,7 @@ const runApp = () => {
       if (tagName === 'A') {
         const aUrl = e.target.href;
         const post = watchedState.posts.find(({ url }) => url === aUrl);
-        post.watched = true;
+        watchedState.watchedPostsIds.push(post.id);
       }
 
       if (tagName === 'BUTTON') {
@@ -75,7 +92,7 @@ const runApp = () => {
 
         const aUrl = a.href;
         const post = watchedState.posts.find(({ url }) => url === aUrl);
-        post.watched = true;
+        watchedState.watchedPostsIds.push(post.id);
 
         const { url, title, description } = post;
         watchedState.modal = { title, description, url };
@@ -89,25 +106,30 @@ const runApp = () => {
       const formData = new FormData(e.target);
       const inputValue = formData.get('url').trim();
 
-      validate(inputValue, state)
+      validate(inputValue, watchedState.feeds, baseUrlSchema)
         .then(() => axios.get(getUrl(inputValue)))
         .then((response) => {
           const { posts, feed } = parseRSS(response.data.contents);
           feed.feedUrl = inputValue;
 
+          posts.forEach((post) => {
+            const id = getUniqId(state.postsIds);
+            post.id = id;
+            state.postsIds.push(id);
+
+            post.feedUrl = inputValue;
+          });
+
           posts.reverse();
           watchedState.posts.push(...posts);
           watchedState.feeds.push(feed);
 
-          watchedState.form.error = 'successfullyUploaded';
+          watchedState.form.message = 'successfullyUploaded';
           watchedState.form.status = 'success';
         })
         .catch((err) => {
-          if (isAxiosError(err)) watchedState.form.error = 'networkError';
-          else if (err.isParseError === true) watchedState.form.error = err.message;
-          else if (err.name === 'ValidationError') watchedState.form.error = err.message;
-          else watchedState.form.error = 'somethingWrong';
-
+          console.log(err);
+          watchedState.form.message = getProcessErrorType(err);
           watchedState.form.status = 'invalid';
         });
     });

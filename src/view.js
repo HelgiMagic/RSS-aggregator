@@ -16,12 +16,13 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
   }
 
   if (path === 'posts') {
-    const htmlPosts = state.posts.map((post) => renderPost(post, i18));
+    const htmlPosts = state.posts.map((post) => renderPost(post, i18, state.watchedPostsIds));
+    console.log(state);
     rerenderPosts(elements, htmlPosts);
   }
 
-  if (path.endsWith('.watched')) {
-    const htmlPosts = state.posts.map((post) => renderPost(post, i18));
+  if (path === 'watchedPostsIds') {
+    const htmlPosts = state.posts.map((post) => renderPost(post, i18, state.watchedPostsIds));
     rerenderPosts(elements, htmlPosts);
   }
 
@@ -31,7 +32,6 @@ const createWatchedState = (elements, state, i18) => onChange(state, (path, valu
       document.querySelector('.posts').classList.remove('invisible');
     }
 
-    // const htmlFeed = renderFeed(state.feeds.at(-1));
     renderNewFeed(elements, renderFeed(state.feeds.at(-1)));
   }
 

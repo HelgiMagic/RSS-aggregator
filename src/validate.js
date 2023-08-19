@@ -1,14 +1,8 @@
-import {
-  string,
-} from 'yup';
+const validate = (url, feeds, baseSchema) => {
+  const feedUrls = feeds.map((feed) => feed.feedUrl);
+  const actualSchema = baseSchema.notOneOf(feedUrls);
 
-const validate = (url, globalState) => {
-  const subs = globalState.feeds.map((feed) => feed.feedUrl);
-  const schema = string()
-    .url().required('required')
-    .notOneOf(subs);
-
-  return schema.validate(url);
+  return actualSchema.validate(url);
 };
 
 export default validate;

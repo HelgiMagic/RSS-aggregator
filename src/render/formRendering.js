@@ -14,8 +14,7 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.formInput.classList.remove('is-invalid');
 
     elements.warningMessage.classList.remove('invisible');
-    elements.warningMessage.textContent = i18.t(globalState.form.error);
-    console.log(globalState.form.error);
+    elements.warningMessage.textContent = i18.t(globalState.form.message);
     elements.warningMessage.setAttribute('style', 'color: green');
   } else elements.warningMessage.removeAttribute('style');
 
@@ -27,7 +26,7 @@ const renderForm = (elements, globalState, i18, inputValue) => {
     elements.formInput.classList.add('is-invalid');
     elements.formInput.value = inputValue;
 
-    elements.warningMessage.textContent = i18.t(globalState.form.error);
+    elements.warningMessage.textContent = i18.t(globalState.form.message);
     elements.warningMessage.classList.remove('invisible');
   }
 

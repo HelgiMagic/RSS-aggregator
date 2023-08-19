@@ -12,13 +12,13 @@ const renderFeed = ({ title, description }) => {
   return feed;
 };
 
-const renderPost = ({ url, title, watched }, i18) => {
+const renderPost = ({ url, title, id }, i18, watchedPostsIds) => {
   const a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('target', '_blank');
   a.classList.add('fw-bold');
   a.textContent = title;
-  if (watched) a.className = 'fw-normal';
+  if (watchedPostsIds.includes(id)) a.className = 'fw-normal';
 
   const button = document.createElement('button');
   button.textContent = i18.t('view');
@@ -31,14 +31,14 @@ const renderPost = ({ url, title, watched }, i18) => {
   li.classList.add('post', 'd-flex', 'justify-content-between');
   li.append(a, button);
 
-  return { url, element: li };
+  return li;
 };
 
 const rerenderPosts = (elements, posts) => {
   elements.postsUL.innerHTML = '';
 
-  posts.forEach(({ element }) => {
-    elements.postsUL.prepend(element);
+  posts.forEach((post) => {
+    elements.postsUL.prepend(post);
   });
 };
 
