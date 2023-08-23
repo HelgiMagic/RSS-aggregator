@@ -34,8 +34,7 @@ const runApp = () => {
       message: null,
     },
     posts: [],
-    postsIds: [],
-    watchedPostsIds: [],
+    watchedPostsIds: new Set(),
     feeds: [],
     modal: {
       title: null, description: null, link: null,
@@ -83,7 +82,7 @@ const runApp = () => {
       if (tagName === 'A') {
         const aUrl = e.target.href;
         const post = watchedState.posts.find(({ url }) => url === aUrl);
-        watchedState.watchedPostsIds.push(post.id);
+        watchedState.watchedPostsIds.add(post.id);
       }
 
       if (tagName === 'BUTTON') {
@@ -92,7 +91,7 @@ const runApp = () => {
 
         const aUrl = a.href;
         const post = watchedState.posts.find(({ url }) => url === aUrl);
-        watchedState.watchedPostsIds.push(post.id);
+        watchedState.watchedPostsIds.add(post.id);
 
         const { url, title, description } = post;
         watchedState.modal = { title, description, url };
@@ -113,9 +112,8 @@ const runApp = () => {
           feed.feedUrl = inputValue;
 
           posts.forEach((post) => {
-            const id = getUniqId(state.postsIds);
+            const id = getUniqId();
             post.id = id;
-            state.postsIds.push(id);
 
             post.feedUrl = inputValue;
           });

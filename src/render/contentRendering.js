@@ -18,7 +18,7 @@ const renderPost = ({ url, title, id }, i18, watchedPostsIds) => {
   a.setAttribute('target', '_blank');
   a.classList.add('fw-bold');
   a.textContent = title;
-  if (watchedPostsIds.includes(id)) a.className = 'fw-normal';
+  if (watchedPostsIds.has(id)) a.className = 'fw-normal';
 
   const button = document.createElement('button');
   button.textContent = i18.t('view');

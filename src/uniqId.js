@@ -1,9 +1,7 @@
-const getRandomNumber = (maxI, minI = 0) => Math.floor(Math.random() * ((maxI + 1) - minI) + minI);
-// maxI, minI = max number included, min number included
+let id = 0;
 
-const getUniqId = (idList) => {
-  const id = getRandomNumber(10000);
-  if (idList.includes(id)) return getUniqId(idList);
+const getUniqId = () => {
+  id += 1;
 
   return id;
 };
